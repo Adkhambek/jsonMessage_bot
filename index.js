@@ -1,9 +1,11 @@
 require("dotenv").config();
 const { Telegraf } = require("telegraf");
+const fs = require("fs");
 
-const PORT = process.env.PORT || 8003;
+const PORT = process.env.PORT;
 const TOKEN = process.env.TOKEN;
-const URL = process.env.URL;
+const KEY = process.env.KEY;
+const CERT = process.env.CERT;
 const bot = new Telegraf(TOKEN);
 
 bot.use((ctx, next) => {
@@ -17,12 +19,12 @@ bot.use((ctx, next) => {
     }
 });
 
-bot.launch({
-    webhook: {
-        domain: URL,
-        port: PORT,
-    },
-});
+const tlsOptions = {
+    key: fs.readFileSync(KEY),
+    cert: fs.readFileSync(CERT),
+};
+
+bot.startWebhook(`/bot`, tlsOptions, PORT);
 
 // bot.launch()
 //     .then(() => console.log("Bot running ..."))
