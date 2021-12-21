@@ -26,8 +26,15 @@ bot.use((ctx, next) => {
     }
 });
 
-bot.telegram.setWebhook(`${URL}/bot${TOKEN}`);
-bot.startWebhook(`/bot${TOKEN}`, tlsOptions, PORT);
+// bot.telegram.setWebhook(`${URL}/bot${TOKEN}`);
+// bot.startWebhook(`/bot${TOKEN}`, tlsOptions, PORT);
+
+bot.launch({
+    webhook: {
+        domain: URL,
+        port: PORT,
+    },
+});
 
 // bot.launch()
 //     .then(() => console.log("Bot running ..."))
