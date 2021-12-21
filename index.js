@@ -6,6 +6,15 @@ const TOKEN = process.env.TOKEN;
 const URL = process.env.URL;
 const bot = new Telegraf(TOKEN);
 
+const tlsOptions = {
+    key: fs.readFileSync("server-key.pem"),
+    cert: fs.readFileSync("server-cert.pem"),
+    ca: [
+        // This is necessary only if the client uses a self-signed certificate.
+        fs.readFileSync("client-cert.pem"),
+    ],
+};
+
 bot.use((ctx, next) => {
     if (ctx.update.message.text === "/start") {
         ctx.reply(
@@ -18,7 +27,7 @@ bot.use((ctx, next) => {
 });
 
 bot.telegram.setWebhook(`${URL}/bot${TOKEN}`);
-bot.startWebhook(`/bot${TOKEN}`, null, PORT);
+bot.startWebhook(`/bot${TOKEN}`, tlsOptions, PORT);
 
 // bot.launch()
 //     .then(() => console.log("Bot running ..."))
