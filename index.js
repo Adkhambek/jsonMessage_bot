@@ -1,6 +1,10 @@
 require("dotenv").config();
 const { Telegraf } = require("telegraf");
-const bot = new Telegraf(process.env.TOKEN);
+
+const PORT = process.env.PORT || 8003;
+const TOKEN = process.env.TOKEN;
+const URL = process.env.URL;
+const bot = new Telegraf(TOKEN);
 
 bot.use((ctx, next) => {
     if (ctx.update.message.text === "/start") {
@@ -13,6 +17,9 @@ bot.use((ctx, next) => {
     }
 });
 
-bot.launch()
-    .then(() => console.log("Bot running ..."))
-    .catch((err) => console.log(err));
+bot.telegram.setWebhook(`${URL}/bot${TOKEN}`);
+bot.startWebhook(`/bot${TOKEN}`, null, PORT);
+
+// bot.launch()
+//     .then(() => console.log("Bot running ..."))
+//     .catch((err) => console.log(err));
