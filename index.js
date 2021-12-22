@@ -20,8 +20,8 @@ bot.use((ctx, next) => {
     }
 });
 
-bot.telegram.setWebhook(URL + bot.context.data.id);
-app.use(bot.webhookCallback("/" + bot.context.data.id));
+bot.telegram.setWebhook(URL + bot.secretPathComponent());
+app.use(bot.webhookCallback("/" + bot.secretPathComponent));
 
 app.listen(PORT, () => {
     console.log("server is running ...");
