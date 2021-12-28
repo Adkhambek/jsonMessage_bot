@@ -4,6 +4,8 @@ const express = require("express");
 
 const PORT = process.env.PORT;
 const TOKEN = process.env.TOKEN;
+const URL = process.env.URL;
+const secretPath = process.env.SECRET_PATH;
 const bot = new Telegraf(TOKEN);
 const app = express();
 
@@ -20,12 +22,19 @@ bot.use((ctx, next) => {
     }
 });
 
-bot.telegram.setWebhook(URL + bot.secretPathComponent());
-app.use(bot.webhookCallback("/" + bot.secretPathComponent));
+bot.telegram.setWebhook(URL + secretPath);
+app.use(bot.webhookCallback(secretPath));
 
 app.listen(PORT, () => {
     console.log("server is running ...");
 });
+
+// bot.telegram.setWebhook(URL + bot.secretPathComponent());
+// app.use(bot.webhookCallback("/" + bot.secretPathComponent));
+
+// app.listen(PORT, () => {
+//     console.log("server is running ...");
+// });
 
 // bot.launch()
 //     .then(() => console.log("Bot running ..."))
