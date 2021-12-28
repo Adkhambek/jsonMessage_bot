@@ -7,9 +7,6 @@ const TOKEN = process.env.TOKEN;
 const URL = process.env.URL;
 const secretPath = process.env.SECRET_PATH;
 const bot = new Telegraf(TOKEN);
-const app = express();
-
-app.get("/", (req, res) => res.send("Test"));
 
 bot.use((ctx, next) => {
     if (ctx.update.message.text === "/start") {
@@ -22,20 +19,16 @@ bot.use((ctx, next) => {
     }
 });
 
-bot.telegram.setWebhook(URL + secretPath);
-app.use(bot.webhookCallback(secretPath));
-
-app.listen(PORT, () => {
-    console.log("server is running ...");
-});
-
-// bot.telegram.setWebhook(URL + bot.secretPathComponent());
-// app.use(bot.webhookCallback("/" + bot.secretPathComponent));
-
-// app.listen(PORT, () => {
-//     console.log("server is running ...");
-// });
-
-// bot.launch()
-//     .then(() => console.log("Bot running ..."))
-//     .catch((err) => console.log(err));
+if (process.env.NODE_ENV === "production") {
+    bot.telegram.setWebhook(URL + secretPath);
+    const app = express();
+    app.get("/", (req, res) => res.send("Test"));
+    app.use(bot.webhookCallback(secretPath));
+    app.listen(PORT, () => {
+        console.log("server is running ...");
+    });
+} else {
+    bot.launch()
+        .then(() => console.log("Bot running ..."))
+        .catch((err) => console.log(err));
+}
