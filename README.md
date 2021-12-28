@@ -6,7 +6,7 @@ A simple bot for converting messages to JSON format
 
 ## Demo
 
-Live Demo: @jsonMessage_bot
+Live Demo: [@jsonMessage_bot](https://t.me/jsonMessage_bot)
 
 ## Install
 
@@ -21,10 +21,10 @@ $ npm install
 ```
 Create .env file that include:
 
-*TOKEN = <Bot token>
-*URL = <your website url>
-*SECRET_PATH = <secret path>
-*PORT = 8443
+* TOKEN = <Bot token>
+* URL = <your website url>
+* SECRET_PATH = <secret path>
+* PORT = 8443
 ```
 
 ## Simple build for production
